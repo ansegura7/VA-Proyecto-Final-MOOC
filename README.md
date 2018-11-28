@@ -1,0 +1,2 @@
+# VA-Proyecto-Final-MOOC
+El departamento de Psicología de la Universidad de los Andes ha creado el MOOC “Sexualidad… mucho más que sexo”, el cual se encuentra implementado dentro de la plataforma COURSERA, a partir de la cual se pretende realizar un ejercicio de análisis y construcción de visualización de datos, que fortalezcan el posicionamiento del curso y la posibilidad de mejorar sus contenidos.
