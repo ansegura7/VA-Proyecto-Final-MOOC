@@ -3,6 +3,7 @@
 // Init parameters
 var ast = [];
 ast.data = new Array();
+ast.data2 = new Array();
 ast.width = 495;
 ast.width2 = 1000;
 ast.height = 350;
@@ -62,13 +63,18 @@ ast.loadData = () => {
 			// Load and parse data
 			data.forEach(function(d, i) {
 				d.Date = new Date(d.Date);
+				d.Year = +(new Date(d.Date).getFullYear());
 				d.Count = +d.Count;
 				d.HiLimit = +d.HiLimit;
 				d.LoLimit = +d.LoLimit;
+				ast.data2.push(d);
 			});
 
+			let yearList = ast.getDistinctValues(ast.data2, "Year");
+			ast.addComboBoxData("#cmbMSYear", yearList, "2018", ast.allOption);
+
 			// Create charts
-			ast.createSecondaryCharts(data);
+			ast.createSecondaryCharts();
 		},
 		function(error) {
 			// Error log message
@@ -95,8 +101,23 @@ ast.createCharts = () => {
 	ast.changeFilter();
 }
 
-ast.createSecondaryCharts = (data) => {
+ast.createSecondaryCharts = () => {
 	// console.log("Secondary Data");	console.log(data);
+	
+	// Get Filter
+	let currYear = d3.select("#cmbMSYear").node().value.trim();
+	// console.log("currYear: " + currYear);
+
+	// Filtering data
+	let filterData = []
+	if (currYear != ast.allOption) {
+		filterData = ast.data2.filter((d) => {
+			return (d.Year == +currYear);
+		});
+	}
+	else {
+		filterData = ast.data2;
+	}
 
 	// Chart 2 - Line chart
 	let svgLineChart2 = d3.select("#svgSt4Lines");
@@ -106,7 +127,7 @@ ast.createSecondaryCharts = (data) => {
 	let xTitle = "Date";
 	let yTitle = "Registration";
 	let cTitle = "";
-	ast.doMSLineChart(data, svgLineChart2, 3000, xVar, varList, xTitle, yTitle, cTitle)
+	ast.doMSLineChart(filterData, svgLineChart2, 3000, xVar, varList, xTitle, yTitle, cTitle)
 }
 
 // Filter Main Task 1 charts
@@ -339,8 +360,7 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 	// Create axis
 	var x = d3.scaleLinear()
 		.domain([1, maxItems])
-		.range([0, iwidth])
-		.nice();
+		.range([0, iwidth]);
 
 	var y = d3.scaleLinear()
 		.domain([0, 5])
@@ -489,7 +509,10 @@ ast.doMSLineChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle, cTit
 		.range([0, iwidth]);
 
 	var y = d3.scaleLinear()
-		.domain([0, 200])
+		.domain([
+			d3.min(varData, (c) => { return d3.min(c.values, (d) => { return d.value; }); }),
+			d3.max(varData, (c) => { return d3.max(c.values, (d) => { return d.value; }); })
+		])
 		.range([iheight, 0]);
 
 	var z = d3.scaleOrdinal(colList)

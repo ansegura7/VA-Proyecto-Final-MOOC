@@ -80,7 +80,11 @@
 				</div>
 				<div style="position: relative;" >
 					<div class="divChartTitle" >Rango de Fechas Inscripciones</div>
-					<svg id="svgSt4Lines" class="svgChart" style="width:1000px;"></svg>
+					<select id="cmbMSYear" class="cmbFilter" style="margin:0px; position: absolute; top:7px; right:0px;" onchange="ast.createSecondaryCharts()">
+					</select>
+					<div id="divSt4Content" style="position: relative; width:1000px;">
+						<svg id="svgSt4Lines" class="svgChart" style="width:1000px;"></svg>
+					</div>
 				</div>
 			</div>
 
