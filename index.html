@@ -60,11 +60,18 @@
 					<select id="cmbEduLevel" class="cmbFilter" style="margin:0px" onchange="ast.changeFilter()">
 					</select>
 				</div>
-				<div class="divChartTitle">Expectativas de los Estudiantes Antes vs Después del MOOC</div>
-				<div id="divPt1Content" style="position: relative;">
-					<svg id="svgPt1Bars"  class="svgChart" style="float:left"></svg>
-					<svg id="svgPt1Lines" class="svgChart" style="float:right"></svg>
-					<div style="clear:both;"></div>
+				<div style="position: relative;" >
+					<div class="divChartTitle" >Expectativas de los Estudiantes Antes vs Después del MOOC</div>
+					<select id="cmbMSCurves" class="cmbFilter" style="margin:0px; position: absolute; top:7px; right:0px;" onchange="ast.changeFilter()">
+						<option id="0">All</option>
+						<option id="1">Average</option>
+						<option id="2">Real</option>
+					</select>
+					<div id="divPt1Content" style="position: relative;">
+						<svg id="svgPt1Bars"  class="svgChart" style="float:left"></svg>
+						<svg id="svgPt1Lines" class="svgChart" style="float:right"></svg>
+						<div style="clear:both;"></div>
+					</div>
 				</div>
 			</div>
 

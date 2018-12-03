@@ -22,8 +22,6 @@ ast.loadData = () => {
 	
 	d3.csv(filename).then(
 		function(data) {
-			let iniExpectAvg = d3.mean(data, (d) => { return +d.InitialExpectID });
-			let endExpectAvg = d3.mean(data, (d) => { return +d.EndExpectID });
 
 			// Load and parse data
 			data.forEach(function(d, i) {
@@ -36,10 +34,10 @@ ast.loadData = () => {
 				d.EducationLevel = d.EducationLevel;
 				d.InitialExpectID = +d.InitialExpectID;
 				d.InitialExpectValue = d.InitialExpectValue;
-				d.InitialExpectAvg = +iniExpectAvg
+				d.InitialExpectAvg = 0;
 				d.EndExpectID = +d.EndExpectID;
 				d.EndExpectValue = d.EndExpectValue;
-				d.EndExpectAvg = +endExpectAvg;
+				d.EndExpectAvg = 0;
 				ast.data.push(d);
 			});
 
@@ -87,6 +85,7 @@ ast.changeFilter = () => {
 	let hours = d3.select("#cmbHours").node().value.trim();
 	let country = d3.select("#cmbCountry").node().value.trim();
 	let eduLevel = d3.select("#cmbEduLevel").node().value.trim();
+	let msCurves = d3.select("#cmbMSCurves").node().value.trim();
 
 	// Filtering data
 	let filterData = ast.filterData(ast.data, gender, hours, country, eduLevel);
@@ -105,10 +104,15 @@ ast.changeFilter = () => {
 
 	// Chart 2 - Line chart
 	let svgLineChart1 = d3.select("#svgPt1Lines");
-	varList = ["InitialExpectID", "InitialExpectAvg", "EndExpectID", "EndExpectAvg"];
 	xVar = "StudentIx"
 	xTitle = "Student Index";
 	yTitle = "Expectative";
+	if (msCurves == "All")
+		varList = ["InitialExpectID", "InitialExpectAvg", "EndExpectID", "EndExpectAvg"];
+	else if (msCurves == "Average")
+		varList = ["InitialExpectAvg", "EndExpectAvg"];
+	else
+		varList = ["InitialExpectID", "EndExpectID"];
 	ast.doMultiSeriesChart(filterData, svgLineChart1, ast.maxItems, xVar, varList, xTitle, yTitle, cTitle);
 }
 
@@ -418,6 +422,14 @@ ast.filterData = (data, gender, hours, country, eduLevel) => {
 			// Save node
 			filterData.push(d);
 		}
+	});
+
+	let initialExpectAvg = d3.mean(filterData, (d) => { return +d.InitialExpectID });
+	let endExpectAvg = d3.mean(filterData, (d) => { return +d.EndExpectID });
+
+	filterData.forEach(function(d) {
+		d.InitialExpectAvg = initialExpectAvg;
+		d.EndExpectAvg = endExpectAvg;	
 	});
 
 	// Return filtered data
