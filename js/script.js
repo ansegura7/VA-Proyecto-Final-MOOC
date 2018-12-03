@@ -5,7 +5,8 @@ var ast = [];
 ast.data = new Array();
 ast.width = 495;
 ast.height = 350;
-ast.maxItems = 500;
+ast.maxItems = 310;
+ast.allOption = "All";
 
 // Init dynamic components
 ast.init = () => {
@@ -54,21 +55,17 @@ ast.loadData = () => {
 
 // Create Main Task 1 charts
 ast.createCharts = () => {
-	// console.log("Filted Data");	console.log(ast.data);
+	// console.log("Full Data");	console.log(ast.data);
 
 	// Load combobox
 	let genderList = ast.getDistinctValues(ast.data, "Gender");
 	let hoursList = ast.getDistinctValues(ast.data, "SpendHours");
 	let countryList = ast.getDistinctValues(ast.data, "CountryLive");
 	let eduLevelList = ast.getDistinctValues(ast.data, "EducationLevel");
-	ast.addComboBoxData("#cmbGender", genderList, "")
-	ast.addComboBoxData("#cmbHours", hoursList, "")
-	ast.addComboBoxData("#cmbCountry", countryList, "")
-	ast.addComboBoxData("#cmbEduLevel", eduLevelList, "")
-	console.log(genderList);
-	console.log(hoursList);
-	console.log(countryList);
-	console.log(eduLevelList);
+	ast.addComboBoxData("#cmbGender", genderList, "", ast.allOption);
+	ast.addComboBoxData("#cmbHours", hoursList, "", ast.allOption);
+	ast.addComboBoxData("#cmbCountry", countryList, "", ast.allOption);
+	ast.addComboBoxData("#cmbEduLevel", eduLevelList, "", ast.allOption);
 
 	// Apply filters and create charts
 	ast.changeFilter();
@@ -92,7 +89,7 @@ ast.changeFilter = () => {
 	let eduLevel = d3.select("#cmbEduLevel").node().value.trim();
 
 	// Filtering data
-	let filterData = ast.filterData(ast.data, gender, hours, country, eduLevel); //ast.data.filter((d) => { return (d.year >= yearFrom); });
+	let filterData = ast.filterData(ast.data, gender, hours, country, eduLevel);
 	//console.log("Filted Data");	console.log(filterData);
 
 	// Create stacked data
@@ -286,7 +283,7 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 	
 	// Create axis
 	const x = d3.scaleLinear()
-		.domain([1, rawdata.length])
+		.domain([1, maxItems])
 		.range([0, iwidth]);
 
 	const y = d3.scaleLinear()
@@ -408,8 +405,23 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 
 // Filter data table
 ast.filterData = (data, gender, hours, country, eduLevel) => {
-	console.log("gender: " + gender + ", hours: " + hours + ", country: " + country + ", eduLevel: " + eduLevel);
-	return data;
+	let filterData = [];
+	// console.log("gender: " + gender + ", hours: " + hours + ", country: " + country + ", eduLevel: " + eduLevel);
+
+	data.forEach(function(d) {
+
+		if ((gender == ast.allOption   || gender == d["Gender"]) &&
+			(hours == ast.allOption    || hours == d["SpendHours"]) &&
+			(country == ast.allOption  || country == d["CountryLive"]) &&
+			(eduLevel == ast.allOption || eduLevel == d["EducationLevel"])) {
+
+			// Save node
+			filterData.push(d);
+		}
+	});
+
+	// Return filtered data
+	return filterData;
 }
 
 // Aggregate data by gender
@@ -449,7 +461,12 @@ ast.aggregateData = (data, varList, idList, ansList) => {
 
 	// Aggregate Data
 	ansList.forEach(function(d) {
-		node = {"Answer": d, "Antes": tempData[d]["Antes"], "Despues": tempData[d]["Despues"], "total": (tempData[d]["Antes"] + tempData[d]["Despues"])}
+		if (d in tempData)
+			node = {"Answer": d, "Antes": tempData[d]["Antes"], "Despues": tempData[d]["Despues"], "total": (tempData[d]["Antes"] + tempData[d]["Despues"])};
+		else
+			node = {"Answer": d, "Antes": 0, "Despues": 0, "total": 0};
+
+		// Save node
 		aggData.push(node);
 	});
 
@@ -462,7 +479,7 @@ ast.aggregateData = (data, varList, idList, ansList) => {
 /********* Start Utility Functions *********/
 
 // Add data types to ComboBox
-ast.addComboBoxData = (cmbID, varList, defValue) => {
+ast.addComboBoxData = (cmbID, varList, defValue, initValue) => {
 	var options = d3.select(cmbID);
 
 	const addItem = (d, i) => options
@@ -471,21 +488,9 @@ ast.addComboBoxData = (cmbID, varList, defValue) => {
 		.attr("value", d)
 		.property("selected", (d == defValue));
 
-	// Calls addLi for each item on the array
-	// console.log(varList);
+	// Calls addItem for each item on the array
+	varList = [initValue].concat(varList);
 	varList.forEach(addItem);
-}
-
-// Get Fixed Number
-ast.toFixedNumber = (value, mult, dec) => {
-	if(ast.isNumeric(value))
-		return (mult * value).toFixed(dec);
-	return 0;
-}
-
-// IsNumeric function in Javascript
-ast.isNumeric = (n) => {
-	return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
 // Get distinct values from JSON array
@@ -503,6 +508,18 @@ ast.getDistinctValues = (items, field) => {
 	}
 
 	return result.sort();
+}
+
+// Get Fixed Number
+ast.toFixedNumber = (value, mult, dec) => {
+	if(ast.isNumeric(value))
+		return (mult * value).toFixed(dec);
+	return 0;
+}
+
+// IsNumeric function in Javascript
+ast.isNumeric = (n) => {
+	return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
 // Clone a JSON object
