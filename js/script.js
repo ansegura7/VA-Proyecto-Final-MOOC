@@ -61,6 +61,7 @@ ast.loadData = () => {
 
 			// Load and parse data
 			data.forEach(function(d, i) {
+				d.Date = new Date(d.Date);
 				d.Count = +d.Count;
 				d.HiLimit = +d.HiLimit;
 				d.LoLimit = +d.LoLimit;
@@ -101,6 +102,7 @@ ast.createSecondaryCharts = (data) => {
 	let svgLineChart2 = d3.select("#svgSt4Lines");
 	let xVar = "Date"
 	let varList = ["Count", "HiLimit", "LoLimit"];
+	let colList = ["#1f77b4", "#ff7f0e", "#d62728"];
 	let xTitle = "Date";
 	let yTitle = "Registration";
 	let cTitle = "";
@@ -117,6 +119,7 @@ ast.changeFilter = () => {
 	let cTitle = "";
 	let varList = ["Antes", "Despues"];
 	let ansList = ["0 - N/C", "1 - Poca", "2 - Regular", "3 - Buena", "4 - Muy buena", "5 -Excelente"];
+	let colList = [];
 
 	// Get current filters
 	let gender = d3.select("#cmbGender").node().value.trim();
@@ -145,13 +148,19 @@ ast.changeFilter = () => {
 	xVar = "StudentIx"
 	xTitle = "Student Index";
 	yTitle = "Expectative";
-	if (msCurves == "All")
+	if (msCurves == "All") {
 		varList = ["InitialExpectID", "InitialExpectAvg", "EndExpectID", "EndExpectAvg"];
-	else if (msCurves == "Average")
+		colList = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"];
+	}
+	else if (msCurves == "Average") {
 		varList = ["InitialExpectAvg", "EndExpectAvg"];
-	else
+		colList = ["#ff7f0e", "#d62728"];
+	}
+	else {
 		varList = ["InitialExpectID", "EndExpectID"];
-	ast.doMultiSeriesChart(filterData, svgLineChart1, ast.maxItems, xVar, varList, xTitle, yTitle, cTitle);
+		colList = ["#1f77b4", "#2ca02c"];
+	}
+	ast.doMultiSeriesChart(filterData, svgLineChart1, ast.maxItems, xVar, varList, xTitle, yTitle, cTitle, colList);
 }
 
 // Create the Viz Charts
@@ -303,10 +312,14 @@ ast.doStackedBarChart = (rawdata, svg, keys, xVar, xTitle, yTitle, cTitle, sortD
 }
 
 // Create Multi-Series chart
-ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle, cTitle) => {
+ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle, cTitle, colList) => {
 	svg.html("");
 	if (rawdata == undefined || rawdata.length == 0)
 		return;
+
+	// Set color list
+	if (colList == undefined)
+		colList = d3.schemeCategory10;
 
 	var margin = {top: 40, right: 20, bottom: 50, left: 50},
 		iwidth = ast.width - margin.left - margin.right,
@@ -326,14 +339,14 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 	// Create axis
 	var x = d3.scaleLinear()
 		.domain([1, maxItems])
-		.range([0, iwidth]);
+		.range([0, iwidth])
+		.nice();
 
 	var y = d3.scaleLinear()
 		.domain([0, 5])
-		.range([iheight, 0])
-		.nice();
+		.range([iheight, 0]);
 
-	var z = d3.scaleOrdinal(d3.schemeCategory10)
+	var z = d3.scaleOrdinal(colList)
 		.domain(varData.map((c) => { return c.id; }));
 
 	var line = d3.line()
@@ -447,12 +460,16 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 }
 
 // Create Multi-Series chart
-ast.doMSLineChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle, cTitle) => {
+ast.doMSLineChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle, cTitle, colList) => {
 	svg.html("");
 	if (rawdata == undefined || rawdata.length == 0)
 		return;
 
-	var margin = {top: 40, right: 20, bottom: 50, left: 50},
+	// Set color list
+	if (colList == undefined)
+		colList = d3.schemeCategory10;
+
+	var margin = {top: 40, right: 50, bottom: 50, left: 50},
 		iwidth = ast.width2 - margin.left - margin.right,
 		iheight = ast.height - margin.top - margin.bottom;
 
@@ -467,19 +484,15 @@ ast.doMSLineChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle, cTit
 		};
 	});
 
-	var x = d3.scaleBand()
-		.domain(lineData.map( d => d[xVar]))
+	var x = d3.scaleTime()
+		.domain(d3.extent(lineData, (d) => { return d[xVar]; }))
 		.range([0, iwidth]);
 
 	var y = d3.scaleLinear()
-		.domain([
-			d3.min(varData, (c) => { return d3.min(c.values, (d) => { return d.value; }); }),
-			d3.max(varData, (c) => { return d3.max(c.values, (d) => { return d.value; }); })
-		])
-		.range([iheight, 0])
-		.nice();
+		.domain([0, 200])
+		.range([iheight, 0]);
 
-	var z = d3.scaleOrdinal(d3.schemeCategory10)
+	var z = d3.scaleOrdinal(colList)
 		.domain(varData.map(function(c) { return c.id; }));
 
 	var line = d3.line()
