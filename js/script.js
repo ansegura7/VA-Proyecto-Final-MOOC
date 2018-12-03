@@ -4,7 +4,9 @@
 var ast = [];
 ast.data = new Array();
 ast.width = 495;
+ast.width2 = 1000;
 ast.height = 350;
+ast.height2 = 400;
 ast.maxItems = 310;
 ast.allOption = "All";
 
@@ -18,8 +20,10 @@ ast.init = () => {
 // Load yearly data and charts
 ast.loadData = () => {
 	let filepath = "https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/data/";
-	let filename = filepath + "StudentsExpectation.csv";
-	
+	let filename = ""
+
+	// Load Students Expectatuion data
+	filename = filepath + "StudentsExpectation.csv";
 	d3.csv(filename).then(
 		function(data) {
 
@@ -49,6 +53,27 @@ ast.loadData = () => {
 			console.log(error);
 		}
 	);
+
+	// Load Students Expectatuion data
+	filename = filepath + "StudentsRegistration.csv";
+	d3.csv(filename).then(
+		function(data) {
+
+			// Load and parse data
+			data.forEach(function(d, i) {
+				d.Count = +d.Count;
+				d.HiLimit = +d.HiLimit;
+				d.LoLimit = +d.LoLimit;
+			});
+
+			// Create charts
+			ast.createSecondaryCharts(data);
+		},
+		function(error) {
+			// Error log message
+			console.log(error);
+		}
+	);
 }
 
 // Create Main Task 1 charts
@@ -67,6 +92,19 @@ ast.createCharts = () => {
 
 	// Apply filters and create charts
 	ast.changeFilter();
+}
+
+ast.createSecondaryCharts = (data) => {
+	// console.log("Secondary Data");	console.log(data);
+
+	// Chart 2 - Line chart
+	let svgLineChart2 = d3.select("#svgSt4Lines");
+	let xVar = "Date"
+	let varList = ["Count", "HiLimit", "LoLimit"];
+	let xTitle = "Date";
+	let yTitle = "Registration";
+	let cTitle = "";
+	ast.doMSLineChart(data, svgLineChart2, 3000, xVar, varList, xTitle, yTitle, cTitle)
 }
 
 // Filter Main Task 1 charts
@@ -269,14 +307,14 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 	svg.html("");
 	if (rawdata == undefined || rawdata.length == 0)
 		return;
-	
-	const margin = {top: 40, right: 20, bottom: 50, left: 50},
+
+	var margin = {top: 40, right: 20, bottom: 50, left: 50},
 		iwidth = ast.width - margin.left - margin.right,
 		iheight = ast.height - margin.top - margin.bottom;
 
 	// Manipulate data
-	const lineData = rawdata.slice(0, rawdata.length);
-	const varData = varList.map((id) => {
+	var lineData = rawdata.slice(0, rawdata.length);
+	var varData = varList.map((id) => {
 		return {
 			id: id,
 			values: lineData.map((d) => {
@@ -284,17 +322,18 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 			})
 		};
 	});
-	
+
 	// Create axis
-	const x = d3.scaleLinear()
+	var x = d3.scaleLinear()
 		.domain([1, maxItems])
 		.range([0, iwidth]);
 
-	const y = d3.scaleLinear()
+	var y = d3.scaleLinear()
 		.domain([0, 5])
-		.range([iheight, 0]);
+		.range([iheight, 0])
+		.nice();
 
-	const z = d3.scaleOrdinal(d3.schemeCategory10)
+	var z = d3.scaleOrdinal(d3.schemeCategory10)
 		.domain(varData.map((c) => { return c.id; }));
 
 	var line = d3.line()
@@ -302,7 +341,7 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 		.x((d) => x(d.index))
 		.y((d) => y(d.value));
 
-	const g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 	g.append("g")
 		.attr("class", "axis axis--x")
 		.attr("transform", "translate(0," + iheight + ")")
@@ -403,6 +442,112 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 						return d;
 					});
 			});
+
+	return svg.node();
+}
+
+// Create Multi-Series chart
+ast.doMSLineChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle, cTitle) => {
+	svg.html("");
+	if (rawdata == undefined || rawdata.length == 0)
+		return;
+
+	var margin = {top: 40, right: 20, bottom: 50, left: 50},
+		iwidth = ast.width2 - margin.left - margin.right,
+		iheight = ast.height - margin.top - margin.bottom;
+
+	// Manipulate data
+	var lineData = rawdata.slice(0, rawdata.length);
+	var varData = varList.map(function(id) {
+		return {
+			id: id,
+			values: lineData.map(function(d) {
+				return {date: d[xVar], value: +d[id]};
+			})
+		};
+	});
+
+	var x = d3.scaleBand()
+		.domain(lineData.map( d => d[xVar]))
+		.range([0, iwidth]);
+
+	var y = d3.scaleLinear()
+		.domain([
+			d3.min(varData, (c) => { return d3.min(c.values, (d) => { return d.value; }); }),
+			d3.max(varData, (c) => { return d3.max(c.values, (d) => { return d.value; }); })
+		])
+		.range([iheight, 0])
+		.nice();
+
+	var z = d3.scaleOrdinal(d3.schemeCategory10)
+		.domain(varData.map(function(c) { return c.id; }));
+
+	var line = d3.line()
+	    .curve(d3.curveBasis)
+		.x(function(d) { return x(d.date); })
+		.y(function(d) { return y(d.value); });
+
+	var g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	g.append("g")
+		.attr("class", "axis axis--x")
+		.attr("transform", "translate(0," + iheight + ")")
+		.call(d3.axisBottom(x));
+	
+	// text label for the y axis
+	g.append("g")
+    	.attr("class", "axis axis--y")
+		.call(d3.axisLeft(y))
+		.append("text")
+		.attr("transform", "rotate(-90)")
+		.attr("x", -(iheight / 2))
+		.attr("y", -margin.left)
+		.attr("dy", "1em")
+		.attr("fill", "#000")
+		.style("text-anchor", "middle")
+		.style("font-family", "sans-serif")
+		.style("font-size", "11pt")
+		.text(yTitle);
+	
+	// text label for the x axis
+	g.append("text")
+		.attr("x", (iwidth / 2))
+		.attr("y", iheight + (margin.bottom / 2))
+		.attr("dy", "1em")
+		.style("text-anchor", "middle")
+		.style("font-family", "sans-serif")
+		.style("font-size", "11pt")
+		.text(xTitle); 
+	
+	// add title
+	g.append("text")
+		.attr("x", (iwidth / 2))
+		.attr("y", (10 - margin.top))
+		.attr("dy", "1em")
+		.style("text-anchor", "middle")
+		.style("font-family", "sans-serif")
+		.style("font-size", "16pt")
+		.text(cTitle)
+		.style("color", "steelblue");
+	
+	var vars = g.selectAll(".vars")
+		.data(varData)
+		.enter().append("g")
+		.attr("class", "vars");
+	
+	vars.append("path")
+		.attr("class", "line")
+		.attr("d", function(d) { return line(d.values); })
+		.style("stroke", function(d) { return z(d.id); })
+		.style("fill", "none");
+	
+	vars.append("text")
+		.datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
+		.attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.value) + ")"; })
+		.attr("x", 2)
+		.attr("dy", "0.35em")
+		.style("font-family", "sans-serif")
+		.style("font-size", "10pt")
+		.text(function(d) { return d.id; });
 
 	return svg.node();
 }
