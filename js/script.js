@@ -66,18 +66,19 @@ ast.createCharts = () => {
 
 	// Filtering data
 	let filterData = ast.data; //ast.data.filter((d) => { return (d.year >= yearFrom); });
-	console.log("Filted Data");	console.log(filterData);
+	//console.log("Filted Data");	console.log(filterData);
 
 	// Create stacked data
-	varList = ["0 - N/C", "1 - Poca", "2 - Regular", "3 - Buena", "4 - Muy buena", "5 -Excelente"];
+	varList = ["Antes", "Despues"]; //["0 - N/C", "1 - Poca", "2 - Regular", "3 - Buena", "4 - Muy buena", "5 -Excelente"];
 	let stackedData = ast.aggregateData(filterData, varList);
 	console.log("Stacked Data"); console.log(stackedData);
 
 	// Chart 1 - Stacked bar chart
-	let svgStackedBarChart1 = d3.select("#svgPt1Lines");
-	xTitle = "Num. Estudiantes";
-	yTitle = "Tipo Respuestas";
-	ast.doStackedBarChart(stackedData, svgStackedBarChart1, ast.maxItems, varList, xTitle, yTitle, cTitle);
+	let svgStackedBarChart1 = d3.select("#svgPt1Bars");
+	xVar = "Answer";
+	xTitle = "Answer Type";
+	yTitle = "Students Count";
+	ast.doStackedBarChart(stackedData, svgStackedBarChart1, varList, xVar, xTitle, yTitle, cTitle, false);
 
 	// Chart 2 - Line chart
 	let svgLineChart1 = d3.select("#svgPt1Lines");
@@ -89,29 +90,151 @@ ast.createCharts = () => {
 }
 
 // Create the Viz Charts
-ast.doStackedBarChart = (rawdata, svg, maxItems, varList, xTitle, yTitle, cTitle) => {
+ast.doStackedBarChart = (rawdata, svg, keys, xVar, xTitle, yTitle, cTitle, sortData) => {
 	svg.html("");
 	if (rawdata == undefined || rawdata.length == 0)
 		return;
 
+	// Sort data desc
+	let data = [];
+	if(sortData)
+		rawdata.sort((a, b) => { return b.total - a.total; });
+	else
+		data = rawdata;
+
 	const margin = {top: 50, right: 20, bottom: 50, left: 50},
 		iwidth = ast.width - margin.left - margin.right,
 		iheight = ast.height - margin.top - margin.bottom;
-
-	const g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	
+	// Main graphic
+	let g = svg.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	// set x scale
-	const x = d3.scaleBand()
+	var x = d3.scaleBand()
 		.rangeRound([0, iwidth])
-		.paddingInner(0.05)
-		.align(0.1);
+		.paddingInner(0.25)
+		.align(0.5)
+		.domain(data.map((d) => { return d[xVar]; }));
 
 	// set y scale
-	const y = d3.scaleLinear()
-		.rangeRound([iheight, 0]);
+	var y = d3.scaleLinear()
+		.rangeRound([iheight, 0])
+		.domain([0, d3.max(data, (d) => { return d.total; })])
+		.nice();
 
 	// set the colors
-	const z = d3.scaleOrdinal(d3.schemeCategory10);
+	var z = d3.scaleOrdinal()
+		.range(["#6b486b", "#ff8c00"]) // ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
+		.domain(keys);
+
+	g.append("g")
+		.selectAll("g")
+		.data(d3.stack()
+			.keys(keys)(data))
+		.enter().append("g")
+			.attr("fill", (d) => { return z(d.key); })
+		.selectAll("rect")
+		.data((d) => { return d; })
+		.enter()
+			.append("rect")
+			.attr("x", (d) => { return x(d.data[xVar]); })
+			.attr("y", (d) => { return y(d[1]); })
+			.attr("height", (d) => { return y(d[0]) - y(d[1]); })
+			.attr("width", x.bandwidth())
+		.on("mouseover", function() { tooltip.style("display", null); })
+		.on("mouseout", function() { tooltip.style("display", "none"); })
+		.on("mousemove", function(d) {
+			// console.log(d);
+			var xPosition = d3.mouse(this)[0] - 5;
+			var yPosition = d3.mouse(this)[1] - 5;
+			tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+			tooltip.select("text").text(d[1]-d[0]);
+	});
+
+	g.append("g")
+		.attr("class", "axis")
+		.attr("transform", "translate(0," + iheight + ")")
+		.call(d3.axisBottom(x));
+
+	g.append("g")
+		.attr("class", "axis")
+		.call(d3.axisLeft(y)
+			.ticks(null, "s"))
+		.append("text")
+			.attr("x", 2)
+			.attr("y", y(y.ticks().pop()) + 0.5)
+			.attr("dy", "0.32em")
+			.attr("fill", "#000")
+			.attr("font-weight", "bold")
+			.attr("text-anchor", "start");
+
+	var legend = g.append("g")
+		.attr("font-family", "sans-serif")
+		.attr("font-size", 10)
+		.attr("text-anchor", "end")
+		.selectAll("g")
+			.data(keys.slice().reverse())
+			.enter().append("g")
+			.attr("transform", (d, i) => { return "translate(0," + i * 20 + ")"; });
+
+	legend.append("rect")
+		.attr("x", (iwidth - 19))
+		.attr("y", (10 - margin.bottom))
+		.attr("width", 19)
+		.attr("height", 19)
+		.attr("fill", z);
+
+	legend.append("text")
+		.attr("x", (iwidth - 24))
+		.attr("y", (20 - margin.bottom))
+		.attr("dy", "0.32em")
+		.text((d) => { return d; });
+
+	// Prep the tooltip bits, initial display is hidden
+	var tooltip = svg.append("g")
+		.attr("class", "tooltip")
+		.style("display", "none");
+      
+	tooltip.append("rect")
+		.attr("width", 60)
+		.attr("height", 20)
+		.attr("fill", "white")
+		.style("opacity", 0.5);
+
+	tooltip.append("text")
+		.attr("x", 30)
+		.attr("dy", "1.2em")
+		.style("text-anchor", "middle")
+		.attr("font-size", "12px")
+		.attr("font-weight", "bold");
+	
+	// text label for the y axis
+	g.append("g")
+		.attr("class", "axis axis--y")
+		.call(d3.axisLeft(y))
+		.append("text")
+		.attr("transform", "rotate(-90)")
+		.attr("x", -(iheight / 2))
+		.attr("y", -margin.left)
+		.attr("dy", "1em")
+		.attr("fill", "#000")
+		.style("text-anchor", "middle")
+		.style("font-family", "sans-serif")
+		.style("font-size", "11pt")
+		.text(yTitle);
+	
+	// text label for the x axis
+	g.append("text")
+		.attr("x", (iwidth / 2))
+		.attr("y", iheight + (margin.bottom / 2))
+		.attr("dy", "1em")
+		.style("text-anchor", "middle")
+		.style("font-family", "sans-serif")
+		.style("font-size", "11pt")
+		.text(xTitle); 
+
+	return svg.node();
 }
 
 // Create Multi-Series chart
@@ -145,7 +268,7 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, yVar, varList, xTitle, y
 		.range([iheight, 0]);
 
 	const z = d3.scaleOrdinal(d3.schemeCategory10)
-		.domain(varData.map(function(c) { return c.id; }));
+		.domain(varData.map((c) => { return c.id; }));
 
 	var line = d3.line()
 	    .curve(d3.curveBasis)
@@ -160,7 +283,7 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, yVar, varList, xTitle, y
 	
 	// text label for the y axis
 	g.append("g")
-    	.attr("class", "axis axis--y")
+		.attr("class", "axis axis--y")
 		.call(d3.axisLeft(y))
 		.append("text")
 		.attr("transform", "rotate(-90)")
@@ -247,7 +370,7 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, yVar, varList, xTitle, y
 			.on('mousemove', function() { // mouse moving over canvas
 				var mouse = d3.mouse(this);
 				d3.select(".mouse-line")
-					.attr("d", function() {
+					.attr("d", () => {
 						var d = "M" + mouse[0] + "," + iheight;
 						d += " " + mouse[0] + "," + 0;
 						return d;
@@ -257,19 +380,18 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, yVar, varList, xTitle, y
 	return svg.node();
 }
 
-
 // Aggregate data by gender
 ast.aggregateData = (data, varList) => {
 
 	// Aggregate data
 	let aggData = [];
 	
-	aggData.push({id: "0 - N/C", value: [1, 1]});
-	aggData.push({id: "1 - Poca", value: [33, 0]});
-	aggData.push({id: "2 - Regular", value: [114, 3]});
-	aggData.push({id: "3 - Buena", value: [114, 14]});
-	aggData.push({id: "4 - Muy buena", value: [31, 118]});
-	aggData.push({id: "5 - Excelente", value: [13, 170]});
+	aggData.push({"Answer": "0 - N/C", "Antes": 1, "Despues": 1, "total": 2});
+	aggData.push({"Answer": "1 - Poca", "Antes": 33, "Despues": 0, "total": 33});
+	aggData.push({"Answer": "2 - Regular", "Antes": 114, "Despues": 3, "total": 117});
+	aggData.push({"Answer": "3 - Buena", "Antes": 114, "Despues": 14, "total": 128});
+	aggData.push({"Answer": "4 - Muy buena", "Antes": 31, "Despues": 118, "total": 149});
+	aggData.push({"Answer": "5 - Excelente", "Antes": 13, "Despues": 170, "total": 183});
 
 	return aggData
 }
