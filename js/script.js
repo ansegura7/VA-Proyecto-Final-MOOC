@@ -52,8 +52,30 @@ ast.loadData = () => {
 	);
 }
 
+// Create Main Task 1 charts
 ast.createCharts = () => {
 	// console.log("Filted Data");	console.log(ast.data);
+
+	// Load combobox
+	let genderList = ast.getDistinctValues(ast.data, "Gender");
+	let hoursList = ast.getDistinctValues(ast.data, "SpendHours");
+	let countryList = ast.getDistinctValues(ast.data, "CountryLive");
+	let eduLevelList = ast.getDistinctValues(ast.data, "EducationLevel");
+	ast.addComboBoxData("#cmbGender", genderList, "")
+	ast.addComboBoxData("#cmbHours", hoursList, "")
+	ast.addComboBoxData("#cmbCountry", countryList, "")
+	ast.addComboBoxData("#cmbEduLevel", eduLevelList, "")
+	console.log(genderList);
+	console.log(hoursList);
+	console.log(countryList);
+	console.log(eduLevelList);
+
+	// Apply filters and create charts
+	ast.changeFilter();
+}
+
+// Filter Main Task 1 charts
+ast.changeFilter = () => {
 
 	// Charts variables
 	let xVar = "";
@@ -63,8 +85,14 @@ ast.createCharts = () => {
 	let varList = ["Antes", "Despues"];
 	let ansList = ["0 - N/C", "1 - Poca", "2 - Regular", "3 - Buena", "4 - Muy buena", "5 -Excelente"];
 
+	// Get current filters
+	let gender = d3.select("#cmbGender").node().value.trim();
+	let hours = d3.select("#cmbHours").node().value.trim();
+	let country = d3.select("#cmbCountry").node().value.trim();
+	let eduLevel = d3.select("#cmbEduLevel").node().value.trim();
+
 	// Filtering data
-	let filterData = ast.data; //ast.data.filter((d) => { return (d.year >= yearFrom); });
+	let filterData = ast.filterData(ast.data, gender, hours, country, eduLevel); //ast.data.filter((d) => { return (d.year >= yearFrom); });
 	//console.log("Filted Data");	console.log(filterData);
 
 	// Create stacked data
@@ -378,6 +406,12 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle,
 	return svg.node();
 }
 
+// Filter data table
+ast.filterData = (data, gender, hours, country, eduLevel) => {
+	console.log("gender: " + gender + ", hours: " + hours + ", country: " + country + ", eduLevel: " + eduLevel);
+	return data;
+}
+
 // Aggregate data by gender
 ast.aggregateData = (data, varList, idList, ansList) => {
 
@@ -462,7 +496,7 @@ ast.getDistinctValues = (items, field) => {
 	for (var item, i = 0; item = items[i++];) {
 		var name = item[field];
 
-		if (!(name in lookup)) {
+		if (name !== "" && !(name in lookup)) {
 			lookup[name] = 1;
 			result.push(name);
 		}
