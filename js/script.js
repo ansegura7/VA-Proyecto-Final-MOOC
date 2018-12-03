@@ -53,25 +53,23 @@ ast.loadData = () => {
 }
 
 ast.createCharts = () => {
-
-	console.log("Filted Data");	console.log(ast.data);
+	// console.log("Filted Data");	console.log(ast.data);
 
 	// Charts variables
 	let xVar = "";
-	let yVar = "";
 	let xTitle = "";
 	let yTitle = "";
 	let cTitle = "";
-	let varList = [];
+	let varList = ["Antes", "Despues"];
+	let ansList = ["0 - N/C", "1 - Poca", "2 - Regular", "3 - Buena", "4 - Muy buena", "5 -Excelente"];
 
 	// Filtering data
 	let filterData = ast.data; //ast.data.filter((d) => { return (d.year >= yearFrom); });
 	//console.log("Filted Data");	console.log(filterData);
 
 	// Create stacked data
-	varList = ["Antes", "Despues"]; //["0 - N/C", "1 - Poca", "2 - Regular", "3 - Buena", "4 - Muy buena", "5 -Excelente"];
-	let stackedData = ast.aggregateData(filterData, varList);
-	console.log("Stacked Data"); console.log(stackedData);
+	let stackedData = ast.aggregateData(filterData, varList, ["InitialExpectID", "EndExpectID"], ansList);
+	// console.log("Stacked Data"); console.log(stackedData);
 
 	// Chart 1 - Stacked bar chart
 	let svgStackedBarChart1 = d3.select("#svgPt1Bars");
@@ -86,7 +84,7 @@ ast.createCharts = () => {
 	xVar = "StudentIx"
 	xTitle = "Student Index";
 	yTitle = "Expectative";
-	ast.doMultiSeriesChart(filterData, svgLineChart1, ast.maxItems, xVar, yVar, varList, xTitle, yTitle, cTitle);
+	ast.doMultiSeriesChart(filterData, svgLineChart1, ast.maxItems, xVar, varList, xTitle, yTitle, cTitle);
 }
 
 // Create the Viz Charts
@@ -102,7 +100,7 @@ ast.doStackedBarChart = (rawdata, svg, keys, xVar, xTitle, yTitle, cTitle, sortD
 	else
 		data = rawdata;
 
-	const margin = {top: 50, right: 20, bottom: 50, left: 50},
+	const margin = {top: 40, right: 20, bottom: 50, left: 50},
 		iwidth = ast.width - margin.left - margin.right,
 		iheight = ast.height - margin.top - margin.bottom;
 	
@@ -180,14 +178,14 @@ ast.doStackedBarChart = (rawdata, svg, keys, xVar, xTitle, yTitle, cTitle, sortD
 
 	legend.append("rect")
 		.attr("x", (iwidth - 19))
-		.attr("y", (10 - margin.bottom))
+		.attr("y", (20 - margin.bottom))
 		.attr("width", 19)
 		.attr("height", 19)
 		.attr("fill", z);
 
 	legend.append("text")
 		.attr("x", (iwidth - 24))
-		.attr("y", (20 - margin.bottom))
+		.attr("y", (30 - margin.bottom))
 		.attr("dy", "0.32em")
 		.text((d) => { return d; });
 
@@ -238,12 +236,12 @@ ast.doStackedBarChart = (rawdata, svg, keys, xVar, xTitle, yTitle, cTitle, sortD
 }
 
 // Create Multi-Series chart
-ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, yVar, varList, xTitle, yTitle, cTitle) => {
+ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, varList, xTitle, yTitle, cTitle) => {
 	svg.html("");
 	if (rawdata == undefined || rawdata.length == 0)
 		return;
 	
-	const margin = {top: 50, right: 20, bottom: 50, left: 50},
+	const margin = {top: 40, right: 20, bottom: 50, left: 50},
 		iwidth = ast.width - margin.left - margin.right,
 		iheight = ast.height - margin.top - margin.bottom;
 
@@ -381,18 +379,47 @@ ast.doMultiSeriesChart = (rawdata, svg, maxItems, xVar, yVar, varList, xTitle, y
 }
 
 // Aggregate data by gender
-ast.aggregateData = (data, varList) => {
+ast.aggregateData = (data, varList, idList, ansList) => {
 
 	// Aggregate data
 	let aggData = [];
-	
-	aggData.push({"Answer": "0 - N/C", "Antes": 1, "Despues": 1, "total": 2});
-	aggData.push({"Answer": "1 - Poca", "Antes": 33, "Despues": 0, "total": 33});
-	aggData.push({"Answer": "2 - Regular", "Antes": 114, "Despues": 3, "total": 117});
-	aggData.push({"Answer": "3 - Buena", "Antes": 114, "Despues": 14, "total": 128});
-	aggData.push({"Answer": "4 - Muy buena", "Antes": 31, "Despues": 118, "total": 149});
-	aggData.push({"Answer": "5 - Excelente", "Antes": 13, "Despues": 170, "total": 183});
+	let tempData = {};
+	let iniAnswer, endAnswer;
+	let node;
 
+	data.forEach((row) => {
+
+		// Set Init Anwser
+		iniAnswer = row[idList[0]];
+		if (ansList[iniAnswer] in tempData) {
+			node = tempData[ansList[iniAnswer]];
+			node[varList[0]]++;
+			tempData[ansList[iniAnswer]] = node;
+		}
+		else {
+			tempData[ansList[iniAnswer]] = {"Antes": 1, "Despues": 0};
+		}
+
+		// Set End Anwser
+		endAnswer = row[idList[1]];
+		if (ansList[endAnswer] in tempData) {
+			node = tempData[ansList[endAnswer]];
+			node[varList[1]]++;
+			tempData[ansList[endAnswer]] = node;
+		}
+		else {
+			tempData[ansList[endAnswer]] = {"Antes": 0, "Despues": 1};
+		}
+		
+	});
+
+	// Aggregate Data
+	ansList.forEach(function(d) {
+		node = {"Answer": d, "Antes": tempData[d]["Antes"], "Despues": tempData[d]["Despues"], "total": (tempData[d]["Antes"] + tempData[d]["Despues"])}
+		aggData.push(node);
+	});
+
+	// Return data
 	return aggData
 }
 
