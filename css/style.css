@@ -4,6 +4,25 @@
 #divContent h1 {
 	color: steelblue;
 }
+#divTitle {
+	font-size: 40px;
+	font-family: sans-serif;
+	font-weight: bold;
+	text-shadow: 1px 1px 2px #CACACA;
+	color: black;
+	width: 1000px;
+	margin-bottom: 15px;
+}
+.divTitleTasks {
+	font-size: 30px;
+	font-family: sans-serif;
+	font-weight: bold;
+	text-shadow: 1px 1px 2px #CACACA;
+	color: black;
+	width: 964px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+}
 #divHeader {
 	width:1000px; font-family: sans-serif; font-size: 16px; margin-bottom: 10px;
 }

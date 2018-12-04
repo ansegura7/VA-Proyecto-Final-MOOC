@@ -24,8 +24,10 @@
 	</header>
 	<body>
 		<div id="divContent" align="center">
+			<div id="divTitle">
+				¡Realmente puedes aprender sobre sexualidad a través de un MOOC!
+			</div>
 			<div id="divHeader" align="left" >
-				<h1>¡Realmente puedes aprender sobre sexualidad a través de un MOOC!</h1>
 				<p>Estudiantes: Vladimir E. Cuevas, Juan Carlos Oyuela y Andres Segura Tinoco</p>
 				<p>Curso: Visual Analytics</p>
 				<p>Proyecto Final</p>
@@ -36,12 +38,17 @@
 			<div id="divMain" align="center" >
 
 				<div class="divText">
-					<img src="img/main-banner.jpg" />
+					<img src="img/main-banner.jpg" width="1000px"/>
 				</div>
+				<div class="divText">
+					<p>La Universidad de los Andes, dentro de su proceso de innovación y exploración del esquema educativo, ha desarrollado un conjunto de cursos virtuales (MOOC’s) que pretenden extender la enseñanza mucho más allá de sus fronteras físicas. En particular, el departamento de Psicología ha creado el MOOC “Sexualidad… mucho más que sexo”, el cual tiene como objetivo mejorar la experiencia de los estudiantes para hablar acerca de sexualidad con niñas, niños, estudiantes, pareja o colegas. Este curso se encuentra implementado dentro de la plataforma COURSERA, a partir de la cual se pretende realizar un ejercicio de análisis y construcción de visualización de datos, que fortalezcan el posicionamiento del curso y la posibilidad de mejorar sus contenidos.</p></div>
 
-				<!-- Chart 1: Ingresos de extranjeros a Colombia por genero -->
+				<!-- Chart 1: Conocimiento sobre sexualidad antes vs después -->
+				<div class="divTitleTasks">¿Qué opinan los estudiantes sobre el MOOC?</div>
 				<div class="divText" >
-					<p><b>Tarea Princpal 1</b>: identificar las características que indican que el MOOC es efectivo, y que realmente mejora las competencias y capacidades para hablar de “Sexualidad” en los participantes, aunque no cuente con un profesor de forma presencial (Identify – Features).</p>
+					<p>Como se puede ver en los siguientes 2 gráficos, los estudiantes tenían un conocimiento previo sobre la sexualidad muy inferior al que tienen ahora que cursaron el MOOC, por lo tanto, aunque el curso es online y sin tutor, es efectivo y cumple sus objetivos.</p>
+					<p>Aunque las distribuciones por respuestas son similares, los hombres creían saber más de sexo que las mujeres, antes de cursar el MOOC.</p>
+					<p>Por último, los estudiantes que dedicaron más horas al MOOC manifestaron que su conocimiento sobre la sexualidad mejoró en mayor porcentaje, que los que dedicaron pocas horas al curso.</p>
 				</div>
 				<div class="divText" align="left">
 					<label for="cmbGender">Sexo:</label>
@@ -74,9 +81,11 @@
 					</div>
 				</div>
 
-				<!-- Chart 1: Ingresos de extranjeros a Colombia por genero -->
+				<!-- Chart 1: Cantidad de inscripciones -->
+				<div class="divTitleTasks">¿El MOOC se está volviendo famoso?</div>
 				<div class="divText" >
-					<p><b>Tarea Secundaria 4</b>: Encontrar las épocas o rangos de fechas de mayor inscripción de estudiantes, con el fin de fortalecer y enfocar hacia determinadas poblaciones las campañas de marketing del curso, de tal manera que se logre aumentar el índice de participación anual (Locate - Outliers).</p>
+					<p>La tendencia histórica de las inscripciones es muy positiva, ya que hasta el año 2016, para ningún día se había pasado 50 inscripciones, sin embargo, a partir del 2016, a mediados de febrero y de julio hay picos con más de 100 inscripciones.</p>
+					<p>Sin embargo, lo único preocupante es que para el 2018 la cantidad de inscripciones diarias ha bajado con respecto al 2016 y el 2017... por lo tanto... recomendamos tomar medidas al respecto.</p>
 				</div>
 				<div style="position: relative;" >
 					<div class="divChartTitle" >Rango de Fechas Inscripciones</div>
@@ -91,75 +100,20 @@
 			<div id="divReadme" align="center">
 				
 				<div class="divText" align="left" >
-					<h1>Readme</h1>
+					<h3>Conclusiones</h3>
 
-					<h3>Datos del Proyecto – What</h3>
-					<p><b>Descripción</b>: El dataset muestra el consolidado del registro de obras protegidas por el Derecho de Autor realizado por solicitantes colombianos en el Exterior, en el 2 trimestre del 2018. Los datos están actualizados hasta el 10 Julio del 2018.</p>
-					<p>Los datos provienen de los Datos Abiertos de Colombia <a target="_blank" href="https://www.datos.gov.co/Cultura/Registro-de-obras-por-Colombianos-en-el-Exterior-2/ags6-6cmc/data">www.datos.gov.co</a> y son del tipo Table, sin embargo, en la  presente visualización se procesan los datos en memoria, para convertirlos en un dataset del tipo <b>Network</b>, que contiene las siguientes variables (attributes):</p>
+					<p>A continuación, se listan los insights más importantes de la tarea principal 1 y sus tareas secundarias:</p>
 					<ul>
-						<li>Items (Nodes): categorical, para los nodos Persona, Ciudad y País.</li>
-						<li>Enlaces (Links): categorical, para las relaciones Persona-Ciudad y Ciudad-País.</li>
-						<li>Cantidad (Attribute): ordered, quantitative, sequencial para el peso de los nodos y de los enlaces.</li>
-						<li>Tipo (Attribute): categorical, y puede ser Persona, Ciudad o País.</li>
+						<li>I1: A partir de las encuestas realizadas, se observa la efectividad del MOOC en los estudiantes, ya que antes de cursarlo tienen un conocimiento y expectativas sobre el tema entre regular y bueno (2.5/5.0 en promedio), pero luego de cursarlo, mejora su conocimiento entre muy bueno o excelente (4.5/5.0 en promedio).</li>
+						<li>I2: Los estudiantes que dedicaron más horas de estudio al MOOC (5 o más) manifestaron que su conocimiento sobre la sexualidad mejoró en mayor porcentaje, que los que dedicaron pocas horas al curso (4 o menos), específicamente, casi un 10% de mayor conocimiento sobre el tema.</li>
+						<li>I3: La tendencia histórica de las inscripciones es muy positiva, ya que hasta el año 2016, para ningún día se había pasado de 50 inscripciones, sin embargo, a partir del 2016, a mediados de febrero y de julio hay picos con más de 100 inscripciones. Sin embargo, lo único preocupante es que para el 2018 la cantidad de inscripciones diarias ha bajado con respecto al 2016 y el 2017.</li>
 					</ul>
-
-					<h3>Objetivos del Proyecto - Why</h3>
-					<p><b>Tarea Principal</b></p>
-					<p>TP1: Crear una visualización web que permita localizar (<b>locate</b>) los caminos o las rutas (<b>paths</b>) entre los distintos autores que registran obras en un mismo país (pero en distintas ciudades).</p>
-					<p><b>Tareas Secundarias</b></p>
-					<p>TS1: Explorar (<b>explore</b>) la topología (<b>topology</b>) de las ciudades o países, con respecto a la cantidad de autores que registran obras en el extranjero.</p>
-					<p>TS2: Generar (<b>derive</b>) y contabilizar (<b>summarize</b>) la cantidad de registros de obras (copyrights) que hace un autor en una ciudad en el extranjero (<b>feature</b>).</p>
-
-					<h3>Marcas y Canales – How</h3>
-					<ul>
-						<li>Marcas: puntos para los nodos (Persona, Ciudad y País), líneas para los enlaces.</li>
-						<li>Canal - Color Hue: cada nodo tendrá un color que permitirá identificar el tipo de nodo: si es una persona, una ciudad o un país.</li>
-						<li>Canal - Posición: los nodos tienen una posición espacial en X, determinada por el peso de sus enlaces, la cual también está influenciada por una simulación de fuerzas.</li>
-						<li>Reduce: Aggregate.</li>
-						<li>Manipulate: Select. Se puede seleccionar un nodo, y se resaltarán los nodos vecinos con sus respectivos enlaces.</li>
-					</ul>
-					
-					<h3>Insights</h3>
-					<ul>
-						<li>Los autores Luis German Perdomo y Monica Maria Palacio, están relacionados (tienen un camino en común), ya que ambos registraron obras en USA, respectivamente en las ciudades Orlando y Miami.</li>
-						<li>Jaime Enrique Gutiérrez es el autor colombiano, que más obras registró en el extranjero (Melbourne, Australia) en el segundo trimestre del 2018 (aproximadamente 200).</li>
-						<li>La ciudad donde más distintos autores (20) colombianos registraron obras es Caracas.</li>
-						<li>Estados Unidos es el país con más distintas ciudades (5), en donde autores colombianos registraron obras.</li>
-					</ul>
-
-					<h3>Tecnologías Usadas</h3>
-					<p>Para el desarrollo del proyecto se usaron las siguientes tecnologías:</p>
-					<ul>
-						<li>Se usó Sublime Text 3 y Notepad++ como IDEs de desarrollo.</li>
-						<li>HTML y CSS para maquetar el sitio web.</li>
-						<li>Javascript y el framework D3.js v5, para crear el gráfico de Red con sus respectivas interacciones.</li>
-						<li>GitHub para almacenar el código de la Viz, y de los datos usados. A continuación, el enlace a dicho repositorio principal del proyecto: <a target="_blank" href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC">https://github.com/ansegura7</a></li>
-					</ul>
-
-					<h3>Prerrequisitos</h3>
-					<p>El proyecto depende del acceso a los datos almacenados en el repositorio previamente mencionado y a la disponibilidad del servicio de GitHub Pages, que permite el acceso por medio de un Navegador a la página principal proyecto.</p>
-					<p>Además, al usar los frameworks D3.js v5, depende de que dicha librería esté disponible para ser usada on-line.</p>
-					
-					<h3>Uso</h3>
-					<ul>
-						<li>La visualización se cargará completa al ingresar su URL en un navegador web.</li>
-						<li>Se puede seleccionar el tipo de alineación de los datos, en el combo-box <b>Alineación</b>. Esta interacción, afectará al orden de los nodos en el gráfico de redes.</li>
-						<li>Se pueden mover (arrastrar y soltar) los nodos, para localizar y explorar los caminos y las topologías de la red.</li>
-						<li>Se puede hacer click sobre los nodos, y se resaltarán los nodos vecinos de dicho nodo.</li>
-					</ul>
-					
-					<h3>Autores</h3>
-					<p>El autor de los datos es el Gobierno Nacional y el sitio web Datos Abiertos de Colombia. Los datos están actualizados hasta el 10 de Julio de 2018.</p>
-					<p>El autor de la visualización es Andrés Segura Tinoco, CE 201711582.</p>
-
-					<h3>Screenshot</h3>
-					<p>En el siguiente repositorio, se encuentran algunos screenshots del proyecto:</p>
-					<a target="_blank" href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC/tree/master/screenshots">GitHub Screenshots</a>
 
 					<h3>Links de Interés</h3>
-					<p>Video: <a target="_blank" href="https://youtu.be/eyuMdS1vsHs">Youtube</a>.</p>
-					<p>Presentación: <a target="_blank" href="https://docs.google.com/presentation/d/1x1_JTG_tSodmnutDEWoK45hb_9SEWEkujc5xJK9GxjU/edit?usp=sharing">Google Slides</a>.</p>
-					<p>Tweet: <a target="_blank" href="https://twitter.com/SeguraAndres7/status/1057263951753461761">https://twitter.com/SeguraAndres7</a>.</p>
+					<p>Repositorio: <a target="_blank" href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC">Go to GitHub</a></p>
+					<p>Video: <a target="_blank" href="https://youtu.be/916khzlJZpw">Go to Youtube</a></p>
+					<p>Presentación: <a target="_blank" href="https://docs.google.com/presentation/d/1RNJCR9KBawwebVmRBvZRcYJvi-myQnZqiWp_mZo2Mbw/edit?usp=sharing">Go to Google Slides</a></p>
+					<p>Tweets: <a target="_blank" href="https://twitter.com/SeguraAndres7/status/1069725841125457920">SeguraAndres7</a></p>
 				</div>
 
 			</div>
