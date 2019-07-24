@@ -6,11 +6,8 @@
 - Curso: Visual Analytics
 - Proyecto Final
 - Fecha: 12/04/2018
-- Licencia: MIT
 
-## Project Paper
-A continuación, el enlace al paper del proyecto (en inglés): 
-<a href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC/blob/master/paper/Proyecto%20Final%20VA%20-%20EN.pdf" target="_blank" >Project paper</a>
+<a href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC/blob/master/paper/Proyecto_Final_VA_EN.pdf" target="_blank">Paper</a> | <a href="https://ansegura7.github.io/VA-Proyecto-Final-MOOC/site/index.html" target="_blank">WebSite</a> | <a href="https://youtu.be/916khzlJZpw" target="_blank">Video</a> | <a href="https://docs.google.com/presentation/d/1RNJCR9KBawwebVmRBvZRcYJvi-myQnZqiWp_mZo2Mbw/edit?usp=sharing" target="_blank">Slides</a> | <a href="https://twitter.com/SeguraAndres7/status/1069725841125457920" target="_blank">Tweet</a> | <a href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC" target="_blank">Code</a>
 
 ## Introducción
 La Universidad de los Andes, dentro de su proceso de innovación y exploración del esquema educativo, ha desarrollado un conjunto de cursos virtuales (MOOC's) que pretenden extender la enseñanza mucho más allá de sus fronteras físicas. En particular, el departamento de Psicología ha creado el MOOC “Sexualidad… mucho más que sexo”, el cual tiene como objetivo mejorar la experiencia de los estudiantes para hablar acerca de sexualidad con niñas, niños, estudiantes, pareja o colegas. Este curso se encuentra implementado dentro de la plataforma COURSERA, a partir de la cual se pretende realizar un ejercicio de análisis y construcción de visualización de datos, que fortalezcan el posicionamiento del curso y la posibilidad de mejorar sus contenidos.
@@ -57,12 +54,13 @@ Por último, para cumplir con las tareas principales de la visualización, se de
 El resultado de las encuestas es la data que apoya la tarea principal.
 
 ## Objetivos del Proyecto - Why
-Tareas Principales
+
+### Tareas Principales
 - TP1: Identificar las características que indican que el MOOC es efectivo y que realmente mejora las competencias y capacidades para hablar de “Sexualidad” en los participantes, aunque no cuente con un profesor de forma presencial (Identify – Features).
 - TP2: Descubrir la distribución de las variables demográficas de los estudiantes que completan el curso, para identificar cuales comunidades demuestran mayor interés en realizar y terminar del curso (Discover - Distributions).
 - TP3: Identificar las actividades más populares y las menos populares de las disponibles en el curso, contrastando la cantidad de veces que una actividad fue completada contra la cantidad de veces que una actividad no fue completada (Part-to-whole relationship) (Find/search - Trends) y (Lookup - Values).
 
-Tareas Secundarias
+### Tareas Secundarias
 1. Determinar si existe alguna actividad o ítem en la cual los estudiantes se retiran del curso de manera frecuente, de tal manera que se logre identificar un momento clave de deserción (Locate - Outliers).
 2. Explorar la distribución y el conteo de los estudiantes a nivel global, teniendo en cuenta que el curso se dicta en línea (Explore - Distribution).
 3. Perfilar los usuarios del curso, y lograr identificar las poblaciones más activas (Compare-Features).
@@ -141,19 +139,12 @@ Para el desarrollo del proyecto se usaron las siguientes tecnologías:
 - GitHub para almacenar el código de la Viz y de los datos usados.
 
 ## Prerrequisitos y Uso
-El proyecto sólo depende del acceso a los datos almacenados en el repositorio y a la disponibilidad del servicio de GitHub Pages, que permite el acceso por medio de un Navegador a la página principal proyecto: https://ansegura7.github.io/VA-Proyecto-Final-MOOC/
+El proyecto sólo depende del acceso a los datos almacenados en el repositorio y a la disponibilidad del servicio de GitHub Pages.
 
 ## Autores
 El autor de los datos es COURSERA y los estudiantes que diligenciaron sus encuestas, los datos están actualizados hasta octubre del 2018.
 
-Los autores de la visualización son Vladimir E. Cuevas, Juan Carlos Oyuela y Andres Segura Tinoco.
-
-## Links de interés
-- Presentación: https://docs.google.com/presentation/d/1RNJCR9KBawwebVmRBvZRcYJvi-myQnZqiWp_mZo2Mbw/edit?usp=sharing
-- Youtube: https://youtu.be/916khzlJZpw
-- Tweets:
-	- https://twitter.com/SeguraAndres7/status/1069725841125457920 
-	- https://twitter.com/juanchojdoo/status/1069725966434492416
+Los autores de la visualización son Segura Tinoco, Andres, Juan Carlos Oyuela y <a href="https://github.com/vladcuevas" target="_blank">Cuevas Saavedra, Vladimir</a>.
 
 ## Screenshots
 A continuación, se presentan unos pantallazo del proyecto:
