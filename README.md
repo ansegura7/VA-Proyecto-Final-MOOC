@@ -1,13 +1,13 @@
-# ¡Realmente puedes aprender sobre sexualidad a través de un MOOC!
+# You can really learn about sexuality through a MOOC!
 
 ![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/img/main-banner.jpg)
+
+<a href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC/blob/master/paper/Proyecto_Final_VA_EN.pdf" target="_blank">Paper</a> | <a href="https://ansegura7.github.io/VA-Proyecto-Final-MOOC/site/index.html" target="_blank">WebSite</a> | <a href="https://youtu.be/916khzlJZpw" target="_blank">Video</a> | <a href="https://docs.google.com/presentation/d/1RNJCR9KBawwebVmRBvZRcYJvi-myQnZqiWp_mZo2Mbw/edit?usp=sharing" target="_blank">Slides</a> | <a href="https://twitter.com/SeguraAndres7/status/1069725841125457920" target="_blank">Tweet</a> | <a href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC" target="_blank">Code</a>
 
 - Estudiantes: Vladimir E. Cuevas, Juan Carlos Oyuela y Andres Segura Tinoco
 - Curso: Visual Analytics
 - Proyecto Final
 - Fecha: 12/04/2018
-
-<a href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC/blob/master/paper/Proyecto_Final_VA_EN.pdf" target="_blank">Paper</a> | <a href="https://ansegura7.github.io/VA-Proyecto-Final-MOOC/site/index.html" target="_blank">WebSite</a> | <a href="https://youtu.be/916khzlJZpw" target="_blank">Video</a> | <a href="https://docs.google.com/presentation/d/1RNJCR9KBawwebVmRBvZRcYJvi-myQnZqiWp_mZo2Mbw/edit?usp=sharing" target="_blank">Slides</a> | <a href="https://twitter.com/SeguraAndres7/status/1069725841125457920" target="_blank">Tweet</a> | <a href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC" target="_blank">Code</a>
 
 ## Introducción
 La Universidad de los Andes, dentro de su proceso de innovación y exploración del esquema educativo, ha desarrollado un conjunto de cursos virtuales (MOOC's) que pretenden extender la enseñanza mucho más allá de sus fronteras físicas. En particular, el departamento de Psicología ha creado el MOOC “Sexualidad… mucho más que sexo”, el cual tiene como objetivo mejorar la experiencia de los estudiantes para hablar acerca de sexualidad con niñas, niños, estudiantes, pareja o colegas. Este curso se encuentra implementado dentro de la plataforma COURSERA, a partir de la cual se pretende realizar un ejercicio de análisis y construcción de visualización de datos, que fortalezcan el posicionamiento del curso y la posibilidad de mejorar sus contenidos.
