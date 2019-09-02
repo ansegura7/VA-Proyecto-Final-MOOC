@@ -1,8 +1,8 @@
 # You can really learn about sexuality through a MOOC!
 
-![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/img/main-banner.jpg)
+![alt text](https://raw.githubusercontent.com/ansegura7/VA_FinalProject_MOOC/master/img/main-banner.jpg)
 
-<a href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC/blob/master/paper/Proyecto_Final_VA_EN.pdf" target="_blank">Paper</a> | <a href="https://ansegura7.github.io/VA-Proyecto-Final-MOOC/site/index.html" target="_blank">WebSite</a> | <a href="https://youtu.be/916khzlJZpw" target="_blank">Video</a> | <a href="https://docs.google.com/presentation/d/1RNJCR9KBawwebVmRBvZRcYJvi-myQnZqiWp_mZo2Mbw/edit?usp=sharing" target="_blank">Slides</a> | <a href="https://twitter.com/SeguraAndres7/status/1069725841125457920" target="_blank">Tweet</a> | <a href="https://github.com/ansegura7/VA-Proyecto-Final-MOOC" target="_blank">Code</a>
+<a href="https://github.com/ansegura7/VA_FinalProject_MOOC/blob/master/paper/Proyecto_Final_VA_EN.pdf" target="_blank">Paper</a> | <a href="https://ansegura7.github.io/VA_FinalProject_MOOC/site/index.html" target="_blank">WebSite</a> | <a href="https://youtu.be/916khzlJZpw" target="_blank">Video</a> | <a href="https://docs.google.com/presentation/d/1RNJCR9KBawwebVmRBvZRcYJvi-myQnZqiWp_mZo2Mbw/edit?usp=sharing" target="_blank">Slides</a> | <a href="https://twitter.com/SeguraAndres7/status/1069725841125457920" target="_blank">Tweet</a> | <a href="https://github.com/ansegura7/VA_FinalProject_MOOC" target="_blank">Code</a>
 
 - Estudiantes: Vladimir E. Cuevas, Juan Carlos Oyuela y Andres Segura Tinoco
 - Curso: Visual Analytics
@@ -149,21 +149,21 @@ Los autores de la visualización son Segura Tinoco, Andres, Juan Carlos Oyuela y
 ## Screenshots
 A continuación, se presentan unos pantallazo del proyecto:
 
-![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/screenshots/Figura1.PNG)
+![alt text](https://raw.githubusercontent.com/ansegura7/VA_FinalProject_MOOC/master/screenshots/Figura1.PNG)
 
-![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/screenshots/Figura2.PNG)
+![alt text](https://raw.githubusercontent.com/ansegura7/VA_FinalProject_MOOC/master/screenshots/Figura2.PNG)
 
-![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/screenshots/Figura3.PNG)
+![alt text](https://raw.githubusercontent.com/ansegura7/VA_FinalProject_MOOC/master/screenshots/Figura3.PNG)
 
-![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/screenshots/Figura4.PNG)
+![alt text](https://raw.githubusercontent.com/ansegura7/VA_FinalProject_MOOC/master/screenshots/Figura4.PNG)
 
-![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/screenshots/Figura5.PNG)
+![alt text](https://raw.githubusercontent.com/ansegura7/VA_FinalProject_MOOC/master/screenshots/Figura5.PNG)
 
-![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/screenshots/Figura6.PNG)
+![alt text](https://raw.githubusercontent.com/ansegura7/VA_FinalProject_MOOC/master/screenshots/Figura6.PNG)
 
-![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/screenshots/Figura7.PNG)
+![alt text](https://raw.githubusercontent.com/ansegura7/VA_FinalProject_MOOC/master/screenshots/Figura7.PNG)
 
-![alt text](https://raw.githubusercontent.com/ansegura7/VA-Proyecto-Final-MOOC/master/screenshots/Figura8.PNG)
+![alt text](https://raw.githubusercontent.com/ansegura7/VA_FinalProject_MOOC/master/screenshots/Figura8.PNG)
 
 ## Licencia
 Este proyecto está bajo la licencia MIT.
